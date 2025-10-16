@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using IdentityService.Data;
 using IdentityService.Models;
+using IdentityService.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,20 @@ namespace IdentityService.Controllers
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthController(UserManager<ApplicationUser> userManager, AppDBContext context, IConfiguration config, SignInManager<ApplicationUser> signInManager)
+        //private readonly IAuthRepo _authRepo;
+
+        public AuthController(UserManager<ApplicationUser> userManager,
+            IAuthRepo authRepo,
+            AppDBContext context,
+            IConfiguration config,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _context = context;
             _config = config;
             _signInManager = signInManager;
+
+           // _authRepo = authRepo;
         }
 
         [HttpPost("login")]

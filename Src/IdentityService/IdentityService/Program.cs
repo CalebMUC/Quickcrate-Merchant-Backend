@@ -1,6 +1,7 @@
 using System.Text;
 using IdentityService.Data;
 using IdentityService.Models;
+using IdentityService.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 {
 
     options.UseNpgsql(
-    builder.Configuration.GetConnectionString("PostgressConnection"),
+    builder.Configuration.GetConnectionString("DefaultConnection"),
     npgsqlOptions =>
     {
         npgsqlOptions.EnableRetryOnFailure(
@@ -49,6 +50,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+builder.Services.AddScoped<IAuthRepo, AuthRepo>();
 
 // Add services to the container.
 
